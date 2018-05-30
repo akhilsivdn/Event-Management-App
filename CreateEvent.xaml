@@ -1,0 +1,101 @@
+﻿<Page
+    x:Class="Events.CreateEvent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Events"
+    xmlns:converters="using:Events.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" DataContext="{Binding EventVM, Source={StaticResource MainVM}}">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InvBooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid Background="#0D223F">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <Image Source="Assets/Eventor_Logo.png" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
+
+            <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
+
+                <TextBox x:Name="name" PlaceholderText="Name" Margin="0,0,0,8" Text="{Binding SelectedEvent.Name, Mode=TwoWay}"/>
+                <TextBox x:Name="desc" PlaceholderText="Description" Margin="0,0,0,8" TextWrapping="Wrap" Text="{Binding SelectedEvent.Description, Mode=TwoWay}" Height="120"/>
+
+                <TextBox PlaceholderText="Venue" Text="{Binding SelectedEvent.Venue, Mode=TwoWay}" x:Name="venue"/>
+
+                <TextBlock Margin="8" Text="Date of the event:" Foreground="White"/>
+                <DatePicker x:Name="DatePicker" Date="{Binding SelectedEvent.Date, Mode=TwoWay}"/>
+
+
+                <CheckBox Margin="8" Content="All day event" Foreground="White" x:Name="alldayCheckbox" IsChecked="{Binding IsAllDayEvent, Mode=TwoWay}"/>
+
+                <TextBlock Margin="8" Text="Total seats for the all day event" Foreground="White"/>
+                <TextBox PlaceholderText="Total seats" IsEnabled="{Binding IsAllDayEvent,Mode=TwoWay}" 
+                         Margin="0,0,0,8" Text="{Binding SelectedEvent.AllDayEventTotalSeats, Mode=TwoWay}" x:Name="alldayseats"/>
+
+
+                <Grid Visibility="{Binding IsAllDayEvent, Mode=TwoWay, Converter={StaticResource InvBooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="AUto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel x:Name="session1">
+                        <TextBlock Margin="8" Text="Session 1" Foreground="White"/>
+
+                        <TextBlock Margin="8" Text="Start time of the event:" Foreground="White"/>
+                        <TimePicker x:Name="StartTimePicker1" Time="{Binding Session1.StartTime, Mode=TwoWay}"/>
+
+                        <TextBlock Margin="8" Text="End time of the event" Foreground="White"/>
+                        <TimePicker x:Name="EndTimePicker1" Margin="0,0,0,8" Time="{Binding Session1.EndTime, Mode=TwoWay}"/>
+
+                        <TextBlock Margin="8" Text="Total seats for session 1" Foreground="White"/>
+                        <TextBox PlaceholderText="Total seats"  Margin="0,0,0,8" Text="{Binding Session1.TotalSeats, Mode=TwoWay}" x:Name="seats"/>
+
+                    </StackPanel>
+
+                    <Button HorizontalAlignment="Left" Grid.Row="1" Content="" Height="25" FontFamily="Segoe MDL2 Assets" Click="AddButton_Click" x:Name="AddSession" Visibility="{Binding IsSecondSessionAvailable, Mode=TwoWay,Converter={StaticResource InvBooleanToVisibilityConverter}}"/>
+                    <Button HorizontalAlignment="Left" Grid.Row="2" Content="" Height="25" FontFamily="Segoe MDL2 Assets" Click="RemoveButton_Click" x:Name="RemoveSession" Visibility="{Binding IsSecondSessionAvailable, Mode=TwoWay,Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <StackPanel Grid.Row="3" x:Name="session2"  Visibility="{Binding IsSecondSessionAvailable, Mode=TwoWay,Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Margin="8" Text="Session 2" Foreground="White"/>
+
+                        <TextBlock Margin="8" Text="Start time of session 2" Foreground="White"/>
+                        <TimePicker x:Name="StartTimePicker2" Time="{Binding Session2.StartTime, Mode=TwoWay}"/>
+
+                        <TextBlock Margin="8" Text="End time of session 2" Foreground="White"/>
+                        <TimePicker x:Name="EndTimePicker2" Margin="0,0,0,8" Time="{Binding Session2.EndTime, Mode=TwoWay}"/>
+
+                        <TextBlock Margin="8" Text="Total seats for session 2" Foreground="White"/>
+                        <TextBox PlaceholderText="Total seats available for session 2"  Margin="0,0,0,8" Text="{Binding Session2.TotalSeats, Mode=TwoWay}" x:Name="seats_Session2"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <CheckBox Content="Free Event"  Foreground="White" x:Name="freeEventCheckBox" IsChecked="{Binding IsFreeEvent, Mode=TwoWay}"/>
+
+                <TextBlock Text="Price in AUD" Foreground="White"/>
+                <TextBox IsEnabled="{Binding EnablePrice, Mode=TwoWay}" x:Name="price" PlaceholderText="price" Text="{Binding SelectedEvent.Price, Mode=TwoWay}"/>
+
+                <TextBox PlaceholderText="Promocode (optional)"  IsEnabled="{Binding EnablePrice, Mode=TwoWay}"  Margin="0,10,0,8" Text="{Binding SelectedEvent.PromoCode, Mode=TwoWay}" x:Name="promo"/>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="GO BACK" Margin="8" Width="150"  FontSize="17"  Click="BackButton_Click"/>
+            <Button Content="CREATE EVENT" Margin="8" Width="150"  FontSize="17"  Click="CreateButton_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="Events.CreateAccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Events"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Events.Converters"
+    mc:Ignorable="d" DataContext="{Binding AuthVM, Source={StaticResource MainVM}}">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid Background="#0D223F">
+        <Image  Source="Assets/CreateEvent.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Margin="0,300,0,0">
+                <TextBox PlaceholderText="First Name" Margin="5" Text="{Binding CurrentUser.FirstName, Mode=TwoWay}" x:Name="abc" Background="#FFC4C2C2"/>
+                <TextBlock Text="invalid first name" Foreground="Red" FontSize="14" Margin="5,-5,0,0"
+                      Visibility="{Binding InvalidFirstName,Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBox PlaceholderText="Last Name" Margin="5" RelativePanel.AlignRightWithPanel="True"
+                         Text="{Binding CurrentUser.LastName, Mode=TwoWay}" Background="#FFC4C2C2"/>
+                <TextBlock Text="invalid last name" Foreground="Red" FontSize="14" Margin="5,-10,0,0"
+                      Visibility="{Binding InvalidLastName,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <TextBox PlaceholderText="Email ID" Margin="5" Text="{Binding CurrentUser.EmailId, Mode=TwoWay}" Background="#FFC4C2C2"/>
+                <TextBlock Text="invalid email ID" Foreground="Red" FontSize="14" Margin="5,-10,0,0"
+                      Visibility="{Binding InvalidEmailID,Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBox PlaceholderText="Student ID" Margin="5" Text="{Binding CurrentUser.StudentId, Mode=TwoWay}" Background="#FFC4C2C2"/>
+                <TextBlock Text="invalid studnet ID" Foreground="Red" FontSize="14" Margin="5,-10,0,0"
+                      Visibility="{Binding InvalidStudentID,Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <PasswordBox PlaceholderText="Password" Margin="5" x:Name="pass" Password="{Binding CurrentUser.Password, Mode=TwoWay}" Background="#FFC4C2C2"/>
+                <TextBlock Text="invalid password" Foreground="Red" FontSize="14" Margin="5,-10,0,0"
+                      Visibility="{Binding InvalidPassword,Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <PasswordBox PlaceholderText="Confirm Password" Margin="5" x:Name="ConfirmTextBox" Background="#FFC4C2C2"/>
+                <TextBlock Text="password doesn't match" Foreground="Red" FontSize="14" Margin="5,-10,0,0"
+                      Visibility="{Binding IsPasswordMismatch,Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <Button Content="CREATE ACCOUNT"  Click="CreateButton_Click" HorizontalAlignment="Center" Margin="0,20,0,0"  Width="180" FontSize="17"  Background="{StaticResource ButtonBackground}"/>
+                <Button Content="BACK" Click="BackButton_Click" HorizontalAlignment="Center" Margin="0,20,0,0"  Width="180" FontSize="17"  Background="{StaticResource ButtonBackground}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

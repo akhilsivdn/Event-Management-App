@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="Events.ConfirmBooking"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Events"
+    xmlns:converters="using:Events.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"  DataContext="{Binding HomeVM, Source={StaticResource MainVM}}">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid Background="#0D223F">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <Image Source="Assets/Eventor_Logo.png" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <StackPanel Padding="15" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="500" >
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                <TextBlock Text="Card number"  Margin="0,0,0,15" Foreground="White"/>
+                <TextBox KeyDown="HandleKeyDown" x:Name="cardno" PlaceholderText="xxxx-xxxx-xxxx-xxxx" Width="175" TextChanged="TextBox_TextChanged" MaxLength="19" Margin="40,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="CVV"  Margin="0,10,0,15" Foreground="White"/>
+                <TextBox KeyDown="HandleKeyDown" PlaceholderText="xxx" MaxLength="3" x:Name="cvv" Margin="100,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Date of Expiry"  Margin="0,0,0,15" Foreground="White"/>
+                <TextBox KeyDown="HandleKeyDown" PlaceholderText="MM/YY" x:Name="doe" TextChanged="TextBox1_TextChanged" MaxLength="5" Margin="35,0,0,0"/>
+            </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding IsPromoShown,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBox PlaceholderText="PROMOCODE" x:Name="promo" />
+                <Button x:Name="promoValidate" Click="promoValidate_Click" Content="APPLY PROMOCODE" FontSize="17" Width="170"  Margin="30,0,0,0"/>
+            </StackPanel>
+
+
+
+            <TextBlock x:Name="totalAmount" Margin="0,15,0,15" MaxHeight="150" MinHeight="35" TextWrapping="WrapWholeWords">
+                <Run Text="Amount due: $" Foreground="White"/>
+                <Run Text="{Binding AmountDue, Mode=TwoWay}" Foreground="White"/>
+            </TextBlock>
+
+
+        </StackPanel>
+
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2">
+            <StackPanel>
+                <TextBlock Text="Enter email ID for receiving ticket details" Foreground="White"/>
+                <TextBox PlaceholderText="email ID" x:Name="email" Margin="0,6,0,0"/>
+            </StackPanel>
+            <Button Content="GO BACK" Margin="8" Width="160" FontSize="17" Click="BackButton_Click"/>
+            <Button Content="MAKE BOOKING" Margin="8" Width="160" FontSize="17" Click="BookingButton_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="Events.BookedEventPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Events"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Events.Converters"
+    mc:Ignorable="d" DataContext="{Binding HomeVM, Source={StaticResource MainVM}}">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InvBooleanToVisibilityConverter"/>
+    </Page.Resources>
+    <Grid Background="#0D223F">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Source="Assets/Eventor_Logo.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="65" Margin="635,0,583,35" Width="282"/>
+        <Button Content="BACK" Click="BackButton_Click" Width="160" FontSize="17" HorizontalAlignment="Left"  Margin="20" Grid.Row="1"/>
+
+        <!--booked events-->
+        <ScrollViewer Grid.Row="2" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto">
+            <GridView Margin="25"  ItemsSource="{Binding BookedEvents, Mode=TwoWay}" Grid.Row="2"
+                      Visibility="{Binding HasItems,Converter={StaticResource BooleanToVisibilityConverter}}">
+                <GridView.Header>
+                    <TextBlock FontSize="20" Foreground="White">
+                            <Run Text="My Bookings"/>
+                            <Run Text="" FontFamily="Segoe MDL2 Assets"/>
+                    </TextBlock>
+                </GridView.Header>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Tapped="BookedEvents_Grid_Tapped">
+                            <Button Height="175" Width="175" Background="DarkOrange" Foreground="White">
+                                <TextBlock Text="{Binding Name}" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+        </ScrollViewer>
+        <TextBlock Grid.Row="2" Text="Sorry. No bookings found !"
+                      Visibility="{Binding HasItems,Converter={StaticResource InvBooleanToVisibilityConverter}}" Foreground="White" FontSize="17" HorizontalAlignment="Center" Margin="25"/>
+    </Grid>
+</Page>

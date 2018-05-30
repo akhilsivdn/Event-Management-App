@@ -1,0 +1,100 @@
+﻿<Page
+    x:Class="Events.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Events"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Events.Converters"
+    mc:Ignorable="d" DataContext="{Binding HomeVM, Source={StaticResource MainVM}}">
+
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InvBooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid Background="#0D223F">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Source="Assets/Eventor_Logo.png" HorizontalAlignment="Center" VerticalAlignment="Top" Height="65" Margin="635,10,583,35" Width="282"/>
+
+        <Grid Grid.Row="1">
+            <TextBlock Foreground="White" HorizontalAlignment="Left" Margin="25" FontSize="20"  VerticalAlignment="Top" Text="{Binding WelcomeString,Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,16,40,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button Content="LOGOUT" Width="160"  FontSize="17" Click="LogoutButton_Click" Margin="15"/>
+                <Button Content="UPDATE ACCOUNT" Width="160"  FontSize="17" Click="UpdateButton_Click" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="738*"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="463*"/>
+                <ColumnDefinition Width="275*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="CREATE NEW EVENT" Width="180"  FontSize="17" Click="CreateEventButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="289,51,288.5,50"  />
+            <Button Content="MY BOOKINGS"  FontSize="17" Width="160"  Grid.Column="2"  Click="MyBookingsButton_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="288.5,51,14.202,50"  />
+        </Grid>
+        <ScrollViewer Grid.Row="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <!--Upcoming events-->
+                <GridView Margin="25" ItemsSource="{Binding OtherEvents, Mode=TwoWay}" Visibility="{Binding HasOtherEventItems,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <GridView.Header>
+                        <TextBlock FontSize="20" Foreground="White">
+                            <Run Text="UPCOMING EVENTS"/>
+                            <Run Text="" FontFamily="Segoe MDL2 Assets"/>
+                        </TextBlock>
+                    </GridView.Header>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Tapped="UpcomingEvents_Grid_Tapped">
+                                <Button Height="175" Width="175" Background="Aqua" Foreground="Red">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Venue}" TextWrapping="WrapWholeWords"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <!--my events-->
+                <GridView Margin="25" ItemsSource="{Binding MyEvents, Mode=TwoWay}" Grid.Row="1" Visibility="{Binding HasMyEventItems,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <GridView.Header>
+                        <TextBlock FontSize="20" Foreground="White">
+                            <Run Text="MY EVENTS"/>
+                            <Run Text="" FontFamily="Segoe MDL2 Assets"/>
+                        </TextBlock>
+                    </GridView.Header>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid IsTapEnabled="False">
+                                <Button Style="{StaticResource NewButtonStyle}" Height="175" Width="175" Background="Crimson" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black">
+                                    <Grid Padding="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="" Tapped="Grid_Tapped" FontFamily="Segoe MDL2 Assets"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                        <TextBlock Text="{Binding Name}" TextWrapping="WrapWholeWords" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Grid.Row="1"/>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+        </ScrollViewer>
+
+    </Grid>
+</Page>
